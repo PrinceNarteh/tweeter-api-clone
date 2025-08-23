@@ -25,8 +25,12 @@ func (s *authService) Login(ctx context.Context, username, password string) (str
 }
 
 func (s *authService) Register(ctx context.Context, input models.RegisterInput) (models.AuthResponse, error) {
-	// Implement registration logic here
-	// For example, create a new user in the database
+	input.Sanitize()
+
+	if err := input.Validate(); err != nil {
+		return models.AuthResponse{}, err
+	}
+
 	response := models.AuthResponse{}
 	return response, nil // Replace with actual user ID or error
 }

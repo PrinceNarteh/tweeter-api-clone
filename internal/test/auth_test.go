@@ -9,6 +9,26 @@ import (
 	"github.com/PrinceNarteh/tweeter/internal/models"
 )
 
+func TestRegisterInput_Sanitize(t *testing.T) {
+	input := models.RegisterInput{
+		Username:        "  John Doe  ",
+		Email:           "JOHN.doe@email.com",
+		Password:        "secret_password",
+		ConfirmPassword: "secret_password",
+	}
+
+	want := models.RegisterInput{
+		Username:        "John Doe",
+		Email:           "john.doe@email.com",
+		Password:        "secret_password",
+		ConfirmPassword: "secret_password",
+	}
+
+	input.Sanitize()
+
+	require.Equal(t, want, input)
+}
+
 func TestRegisterInput_Validate(t *testing.T) {
 	testCases := []struct {
 		name  string
